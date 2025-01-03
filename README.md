@@ -1,7 +1,7 @@
 # Data Structures and Algorithm Analysis
 ---
 
-[中文版本]()
+[中文版本](https://github.com/MistyWhisper/DSA/blob/main/README_CN.md)
 
 ## Intro
 This project has been designed to provide a foundation of knowledge in the field of data structures. The resources available include courseware, assignments, extended data, and self-written lecture notes. The project has been developed to facilitate self-study for novice users.
