@@ -1,0 +1,191 @@
+The process of delete Node with key 10---------CopyRight@Ms.Cici CHEN
+
+//Code segment of "deleteNode(root,x)"
+
+	public Node deleteNode(Node root, int x) {
+		/**
+		 * deleteNode deletes the node whose key is "x" from a subtree whose root is
+		 * "root" input: root - the root of the subtree x - the key of the node to be
+		 * deleted output: the (updated) root of the subtree
+		 */
+		if(root==null)
+			return null;
+		Node myNode;
+		if(root.getKey()>x) {
+			myNode = deleteNode(root.getLeft(),x);
+			root.setLeft(myNode);
+			//root.setLeft(deleteNode(root.getLeft(), x));
+		}
+		else if(root.getKey()<x) {
+			myNode = deleteNode(root.getRight(),x);
+			root.setRight(myNode);
+			//root.setRight(deleteNode(root.getRight(), x));
+		}
+		else{
+			if(root.getRight()==null) { //root has only one left child,pass the grandSon to grandfather
+				return root.getLeft();
+			}
+			else if(root.getLeft()==null) { // root has only right child, pass the grandSon to grandFather
+				return root.getRight();
+			}
+			else { //root has two child, we need to find the minNode of right branch of root
+				Node minNode= findMinNode(root.getRight()); //To find the minimum Node of the root's right branch
+				
+				//The first way
+				
+				/*
+				 * root.setkey(minNode.getKey());
+				 * root.setRight(deleteNode(root.getRight(), minNode.getKey()));
+				*/
+				
+				//The second way
+				
+				deleteNode(root, minNode.getKey());
+				
+				minNode.setLeft(root.getLeft());
+				minNode.setRight(root.getRight());
+				return minNode; 
+				 
+				
+			}
+		}
+		return root;
+	}
+
+	public Node findMinNode(Node root) {
+		if(root == null)
+			return null;
+		while(root.getLeft()!=null) {
+			root = root.getLeft();
+		}
+		return root;
+	}
+
+     
+
+The process of deleting 10 (which has two children):
+before deletion:
+	root.key=10, x=10 and the BST:
+		   10           
+	  ┌─────┴─────┐     
+	  6          15     
+   ┌──┘        ┌──┘     
+   2          14   
+
+The 1st iteration
+execute the code "if(root==null)":
+	//do nothing, because root isn't null;
+execute the code "if(root.getKey()>x)":
+	//do nothing, because root.key is 10, and x is 10, they are equal.
+execute the code "if(root.getKey()<x)":
+	//do nothing, because root.key is 10, and x is 10, they are equal.
+execute the code "if(root.getRight()==null)":
+	//It goes to the code segments of "if(root.getKey()==x)"
+	//root.getRight is the node with key 15, thus "root.getRight()==null" cannot satisfy, it will do nothing.
+execute the code "if(root.getLeft()==null)":
+	//do thing, the reason is the same as the last step
+execute the code "Node minNode=findMinNode(root.getRight());":
+	//minNode.key=14
+execute the code "deleteNode(root, minNode.getKey());"
+	//it wants to delete the node with key 14, it starts the recursive call, we will go to the 2nd iteration.
+	
+The 2nd iteration:
+	root.key=10, x=14
+execute the code "if(root==null)":
+	//do nothing
+execute the code "if(root.getKey()>x)":
+	//do nothing
+execute the code "if(root.getKey()<x)":
+	//Yes, the condition is satisfied, it will go to the code segment of the condition.
+execute the code "myNode=deleteNode(root.getRight(),x)":
+	//it wants to delete the node with key 14, it starts the recursive call, we will go to the 3rd iteration.
+	//now root.getRight() will be the root in the 3rd iteration.
+
+The 3rd iteration
+	root.key=15,x=14
+execute the code "if(root==null)":
+	//do nothing
+execute the code "if(rootgetKey()>x)":
+	//Yes, the condition is satisfied, it will go to the code segment of it.
+execute the code "myNode=deleteNode(root.getLeft(),x);":
+	it wants to delete the node with key 14, it starts the recursive call, we will go to the 4th iteration.
+	
+The 4th iteration
+	root.key=14,x=14
+execute the code "if(root==null)":
+	//do nothing
+execute the code "if(root.getKey()>x)":
+	//do nothing
+execute the code "if(root.getKey()<x)":
+	//do nothing
+execute the code "if(root.getRight()==null)":
+	//It goes to the code segments of which can satisfy "if(root.getKey()==x)"
+	//Yes, "root.getRight()==null" can satisy, thus it will excute the code "return root.getLeft();"
+execute the code "return root.getLeft()":
+	//root.getLeft is null, thus it will return subtree with root as null to the 3rd iteration.
+
+	//it will go back to the 3rd iteration and continue to execute.
+	
+The 3rd iteration
+	myNode=null,root.key=15, x=14
+execute the code "root.setLeft(myNode)":
+	//the leftChild of Node 15 will become null.  The change is as follows:
+       15	   15
+     ┌──┘ ===> 
+    14   	
+execute the code "return root;":
+	//"return root;" is the last row of the delete method;
+	//it will return the affected(updated) root of the subtree
+	//thus it will return subtree with root of key 15 to the 2nd iteration.       
+	//it will go back to the 2nd iteration and continue to execute.
+	
+The 2nd iteration:
+	myNode.key=15, root.key=10, x=10
+execute the code "root.setRight(myNode);":
+	//the root with key 10 will be reconnected to the updated subtree with root of key 15.  The change is as follows:
+	10                 10      
+	─┴─────┐           ─┴─────┐
+	      15   ===>          15
+        ┌──┘              
+       14            
+execute the code "return root;":
+	//"return root;" is the last row of the delete method;
+	//it will return the affected(updated) root of the subtree
+	//thus it will return subtree with root of key 10 to the 1st iteration.
+	//it will go back to the 1st iteration and continue to execute.
+	
+The 1st iteration:
+	root.key=10, x=10, minNode.key=14
+	//the execution of the code "deleteNode(root, minNode.getKey());" has finished.
+	//Thus the minNode (key=14) has been deleted from BST.
+	//However, the minNode with key 14 still exists in the cache during the execution process.
+	//It will continue to execute the remaining code the 1st code. Now the BST is:
+        		   10      
+        	  ┌─────┴─────┐
+        	  6          15
+           ┌──┘      
+           2         
+
+execute the "minNode.setLeft(root.getLeft());": 
+	//The change of BST will be as follows:
+				   10                		   14      
+        	  ┌─────┴─────┐          	  ┌─────┴
+        	  6          15    ====> 	  6          
+           ┌──┘                         ┌──┘       
+           2                            2       
+execute the "minNode.setRight(root.getRight());":
+					14          		   14      
+				┌─────┴          	  ┌─────┴─────┐
+				6         ===>   	  6          15
+			┌──┘                   ┌──┘            
+			2                  	   2       
+execute the code "return minNode;":	
+	//it will return the Node with key 14 to the method:
+	
+	public void deleteNode(int x) {
+		root = deleteNode(root, x);
+	}
+	
+	//now root.key=14, x=10
+
+Completed.
