@@ -27,7 +27,7 @@ This project has been designed to provide a foundation of knowledge in the field
 4. The present document is open to supplementation and correction at any time!
    
 ## Note
-Please note that all data stored within the designated "Materials" folder is accompanied by an English version.
+Please note that all data stored within the designated "Materials" folder is accompanied by an English version. For the complete assessments, please refer to [DSA](https://github.com/TurboHK/DSA/).
 
 ## Star History
 
